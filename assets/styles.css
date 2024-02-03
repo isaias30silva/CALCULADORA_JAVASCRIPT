@@ -1,0 +1,101 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f7f7f7;
+}
+
+.calculator {
+    width: 300px;
+    background-color: #000;
+    border-radius: 10px;
+    box-shadow: opx 7px 4px #00000040;
+    font-family: Arial, Helvetica, sans-serif;
+    overflow: hidden;
+}
+
+.result {
+    height: 75px;
+    padding: 20px;
+    text-align: right;
+    color: #fff;
+    font-size: 2.5rem;
+}
+
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 1px;
+}
+
+.buttons button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 60px;
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: bold;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    border-radius: 40px;
+}
+
+.button_zero {
+    grid-column: span 2;
+}
+
+.button_c {
+    grid-column: span 3;
+}
+
+.bg_gray {
+    background-color: #cd18da;
+}
+
+.bg_gray:hover {
+    color: #000;
+}
+
+.bg_light_gray {
+    background-color: #08b41c;
+}
+
+.bg_light_gray:hover {
+    color: #000;
+}
+
+.bg_orange {
+    background-color: #cd18da;
+}
+
+.bg_orange:hover {
+    color: #000;
+}
+
+/* Media query para telas menores, ajustando os estilos conforme necessário */
+@media only screen and (max-width: 600px) {
+    .calculator {
+        box-shadow: none;
+    }
+
+    .result {
+        height: 40px;
+        padding: 10px;
+        font-size: 1.5rem;
+    }
+
+    .buttons button {
+        height: 40px;
+        font-size: 1rem;
+    }
+}
