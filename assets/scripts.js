@@ -1,33 +1,23 @@
 const result = document.querySelector(".result");
 const buttons = document.querySelectorAll(".buttons button");
 
+let numerosEOperadores = [];
 let numeroAtual = "";
-let primeiroOperando = null;
-let operador = null;
 let reinicio = false;
 
-/* Atualiza o visor da calculadora com a expressão acumulada,
-substituindo vírgulas por pontos para garantir a representação
-correta de casas decimais em JavaScript. Se `inicioLimpo` for
-true, reinicia o visor para "0".*/
 function atualizarResultado(inicioLimpo = false) {
     if (inicioLimpo) {
         result.innerText = "0";
     } else {
-        const expressaoMatematica = primeiroOperando !== null ? `${primeiroOperando} ${operador} ${numeroAtual}` : numeroAtual;
+        const expressaoMatematica = numerosEOperadores.join(" ") + " " + numeroAtual;
         result.innerText = expressaoMatematica.replace(".", ",");
     }
 }
 
-/**
- * Adiciona um dígito ao número atual na calculadora.
- * Evita adicionar múltiplas vírgulas consecutivas e
- * reinicia o número se necessário. Atualiza o visor.
- */
 function adicionarDigito(digito) {
-    if(digito === "," && (numeroAtual.includes(",") || !numeroAtual)) return;
+    if (digito === "," && (numeroAtual.includes(",") || !numeroAtual)) return;
 
-    if(reinicio) {
+    if (reinicio) {
         numeroAtual = digito;
         reinicio = false;
     } else {
@@ -36,71 +26,75 @@ function adicionarDigito(digito) {
     atualizarResultado();
 }
 
-/**
- * Define um novo operador na calculadora e atualiza o primeiro operando
- * com o número atual, se existir. Reinicia o número atual.
- */
 function definirOperador(novoOperador) {
-    if(numeroAtual) {
-        primeiroOperando = parseFloat(numeroAtual.replace(",", "."));
+    if (numeroAtual) {
+        numerosEOperadores.push(numeroAtual);
+        numerosEOperadores.push(novoOperador);
         numeroAtual = "";
     }
-    operador = novoOperador;
 }
 
-/**
- * Realiza o cálculo com base no operador atual, atualiza o visor
- * com o resultado e reinicia as variáveis relacionadas às operações.
- */
 function calcular() {
-    if(operador === null || primeiroOperando === null) return;
-    let segundoOperador = parseFloat(numeroAtual.replace(",", "."));
-    let resultado;
+    if (!numeroAtual && numerosEOperadores.length === 0) return;
 
-    switch(operador) {
-        case "+":
-            resultado = primeiroOperando + segundoOperador;
-        break;
-        case "-":
-            resultado = primeiroOperando - segundoOperador;
-        break;
-        case "x":
-            resultado = primeiroOperando * segundoOperador;
-        break;
-        case "÷":
-            resultado = primeiroOperando / segundoOperador;
-        break;
-        default:
-            return;
+    if (numeroAtual) {
+        numerosEOperadores.push(numeroAtual);
     }
 
-    if(resultado.toString().split(".")[1]?.length > 2) {
-        numeroAtual = parseFloat(resultado.toFixed(2)).toString();
-    } else {
-        numeroAtual = resultado.toString();
-    }
+    try {
+        let resultado = parseFloat(numerosEOperadores[0]);
 
-    operador = null;
-    primeiroOperando = null;
-    reinicio = true;
-    atualizarResultado();
-}   
+        for (let i = 1; i < numerosEOperadores.length; i += 2) {
+            const operador = numerosEOperadores[i];
+            const proximoNumero = parseFloat(numerosEOperadores[i + 1]);
+
+            if (isNaN(proximoNumero) || !isFinite(proximoNumero)) {
+                throw new Error("Operação inválida");
+            }
+
+            switch (operador) {
+                case "+":
+                    resultado += proximoNumero;
+                    break;
+                case "-":
+                    resultado -= proximoNumero;
+                    break;
+                case "x":
+                    resultado *= proximoNumero;
+                    break;
+                case "÷":
+                    resultado /= proximoNumero;
+                    break;
+                default:
+                    throw new Error("Operação inválida");
+            }
+        }
+
+        if (isNaN(resultado) || !isFinite(resultado)) {
+            throw new Error("Operação inválida");
+        }
+
+        numeroAtual = resultado.toFixed(2);
+        numerosEOperadores = [];
+        reinicio = true;
+        atualizarResultado();
+    } catch (error) {
+        console.error(error.message);
+        limparCalculadora();
+        result.innerText = "Erro";
+    }
+}
 
 function limparCalculadora() {
-    numeroAtual = "0";
-    primeiroOperando = null;
-    operador = null;
-    atualizarResultado();
+    numerosEOperadores = [];
+    numeroAtual = "";
+    atualizarResultado(true);
 }
 
-/**
- * Adiciona eventos de clique a todos os botões da calculadora.
- * Ao clicar em um botão, executa a função correspondente com base no texto do botão.
- */
 buttons.forEach((botao) => {
     botao.addEventListener("click", () => {
         const textoBotao = botao.innerText;
-        if(/^[0-9,]+$/.test(textoBotao)) {
+        if (/^[0-9,]+$/.test(textoBotao)) {
             adicionarDigito(textoBotao);
         } else if (["+", "-", "x", "÷"].includes(textoBotao)) {
             definirOperador(textoBotao);
@@ -108,6 +102,6 @@ buttons.forEach((botao) => {
             calcular();
         } else if (textoBotao === "C") {
             limparCalculadora();
-        } 
+        }
     });
 });

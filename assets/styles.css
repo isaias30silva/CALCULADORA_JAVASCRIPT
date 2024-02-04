@@ -10,23 +10,26 @@ body {
     justify-content: center;
     height: 100vh;
     background-color: #f7f7f7;
+    overflow-x: hidden; /* Impede a barra de rolagem horizontal */
 }
 
 .calculator {
-    width: 300px;
+    max-width: 350px; /* Alterado para max-width */
+    width: 100%;
     background-color: #000;
     border-radius: 10px;
-    box-shadow: opx 7px 4px #00000040;
+    box-shadow: 0px 7px 4px #00000040;
     font-family: Arial, Helvetica, sans-serif;
     overflow: hidden;
+    padding: 10px;
 }
 
 .result {
     height: 75px;
-    padding: 20px;
+    padding: 5px;
     text-align: right;
     color: #fff;
-    font-size: 2.5rem;
+    font-size: 1.5rem;
 }
 
 .buttons {
@@ -50,35 +53,35 @@ body {
     border-radius: 40px;
 }
 
-.button_zero {
+.botao_zero {
     grid-column: span 2;
 }
 
-.button_c {
+.botao_c {
     grid-column: span 3;
 }
 
-.bg_gray {
+.botao_roxo {
     background-color: #cd18da;
 }
 
-.bg_gray:hover {
+.botao_roxo:hover {
     color: #000;
 }
 
-.bg_light_gray {
+.botao_verde {
     background-color: #08b41c;
 }
 
-.bg_light_gray:hover {
+.botao_verde:hover {
     color: #000;
 }
 
-.bg_orange {
+.botao_roxo {
     background-color: #cd18da;
 }
 
-.bg_orange:hover {
+.botao_roxo:hover {
     color: #000;
 }
 
@@ -90,8 +93,8 @@ body {
 
     .result {
         height: 40px;
-        padding: 10px;
-        font-size: 1.5rem;
+        padding: 5px;
+        font-size: 0.9rem;
     }
 
     .buttons button {
