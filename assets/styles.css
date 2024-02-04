@@ -10,11 +10,11 @@ body {
     justify-content: center;
     height: 100vh;
     background-color: #f7f7f7;
-    overflow-x: hidden; /* Impede a barra de rolagem horizontal */
+    overflow-x: hidden; 
 }
 
 .calculator {
-    max-width: 350px; /* Alterado para max-width */
+    max-width: 350px;
     width: 100%;
     background-color: #000;
     border-radius: 10px;
@@ -25,7 +25,7 @@ body {
 }
 
 .result {
-    height: 75px;
+    height: 20%; 
     padding: 5px;
     text-align: right;
     color: #fff;
@@ -77,14 +77,6 @@ body {
     color: #000;
 }
 
-.botao_roxo {
-    background-color: #cd18da;
-}
-
-.botao_roxo:hover {
-    color: #000;
-}
-
 /* Media query para telas menores, ajustando os estilos conforme necessário */
 @media only screen and (max-width: 600px) {
     .calculator {
@@ -92,7 +84,7 @@ body {
     }
 
     .result {
-        height: 40px;
+        height: auto; 
         padding: 5px;
         font-size: 0.9rem;
     }
